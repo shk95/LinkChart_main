@@ -77,5 +77,7 @@ function loadChart(data, name) {
 
         alert('selected date : ' + date + '\nselected stockName : ' + keyword);
         console.log('selected date : ' + date + '\nselected stockName : ' + keyword);
+
+        return getNewsData(date,keyword);
     }
 }
