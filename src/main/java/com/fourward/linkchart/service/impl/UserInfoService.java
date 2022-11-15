@@ -6,6 +6,7 @@ import com.fourward.linkchart.service.IUserInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
@@ -15,6 +16,7 @@ import java.util.Objects;
 public class UserInfoService implements IUserInfoService {
     private final IUserInfoMapper userInfoMapper;
 
+    @Transactional
     @Override
     public void insertUserInfo(UserInfoDTO rDTO) throws Exception {
         log.info(this.getClass().getName() + ".insertUserInfo start");
@@ -26,8 +28,8 @@ public class UserInfoService implements IUserInfoService {
     public void getUserLoginCheck(UserInfoDTO rDTO) throws Exception {
         UserInfoDTO pDTO = userInfoMapper.getUserLoginCheck(rDTO);
 
-        if (Objects.equals(pDTO.getIsExist(), "")) {
-            log.warn("회원정보 오류. 로그인 실패.");
+        if (Objects.equals(pDTO.getIsExist(), "0")) {
+            log.warn("회원정보 오류. 잘못된 요청.");
             throw new Exception();
         }
     }
