@@ -42,6 +42,7 @@ public class ChartController {
             return null;
         }
 
+        /*
         // 입력된 데이터 날짜 범위 가져오기.
         StockDTO dateRange = chartService.getStockData_dateRange(pDTO);
         if (dateRange.getStartDate_exist().equals("")) {
@@ -67,9 +68,11 @@ public class ChartController {
 
             return null;
         }
+        */
+        List<StockDTO> rDTO = chartService.getStockData(pDTO);
 
         log.info("{}.getStockData end", this.getClass().getName());
 
-        return chartService.getStockData(pDTO);
+        return rDTO;
     }
 }
