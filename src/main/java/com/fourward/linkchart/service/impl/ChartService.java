@@ -89,6 +89,28 @@ public class ChartService implements IChartService {
         }
         //메인 로직
         log.info("{}.insertStockData start", this.getClass().getName());
+
+        String dateStart = chartMapper.getStockData_dateStart(rDTO);
+        String dateEnd = chartMapper.getStockData_dateEnd(rDTO);
+        if (dateStart == null) {
+            rDTO.setStartDate_exist("");
+        } else {
+            rDTO.setStartDate_exist(dateStart);
+        }
+        if (dateEnd == null) {
+            rDTO.setEndDate_exist("");
+        } else {
+            rDTO.setEndDate_exist(dateEnd);
+        }
+        log.info("date range of stock_data that already exists : [{}] ~ [{}]", rDTO.getStartDate_exist(), rDTO.getEndDate_exist());
+
+        // 사용자 검색 날짜
+        if (rDTO.getEndDate_req().equals("")) {
+            rDTO.setEndDate_req(DateUtil.getNowDate());
+        }
+        if (rDTO.getStartDate_req().equals("")) {
+            rDTO.setStartDate_req(DateUtil.changeDate(rDTO.getEndDate_req(), YEAR, -2));
+        }
         /*
         검색 시작일 = start_req
         검색 종료일 = end_req
@@ -112,6 +134,7 @@ public class ChartService implements IChartService {
                 new CrawlingStockData(rDTO.getCode(), DateUtil.changeDate(rDTO.getEndDate_exist(), DATE, +1), rDTO.getEndDate_req()).run();
             }
         }
+
         log.info("{}.insertStockData end", this.getClass().getName());
     }
 
@@ -130,36 +153,6 @@ public class ChartService implements IChartService {
     }
 
     @Override
-    public StockDTO getStockData_dateRange(StockDTO rDTO) {
-        log.info("{}.getStockDate_dateRange start", this.getClass().getName());
-
-        String dateStart = chartMapper.getStockData_dateStart(rDTO);
-        String dateEnd = chartMapper.getStockData_dateEnd(rDTO);
-        if (dateStart == null) {
-            rDTO.setStartDate_exist("");
-        } else {
-            rDTO.setStartDate_exist(dateStart);
-        }
-        if (dateEnd == null) {
-            rDTO.setEndDate_exist("");
-        } else {
-            rDTO.setEndDate_exist(dateEnd);
-        }
-
-        log.info("{}.getStockDate_dateRange end", this.getClass().getName());
-
-        return rDTO;
-    }
-
-    @Override
     public StockDTO setDate(StockDTO pDTO) throws Exception {
-        // 사용자 검색 날짜
-        if (pDTO.getEndDate_req().equals("")) {
-            pDTO.setEndDate_req(DateUtil.getNowDate());
-        }
-        if (pDTO.getStartDate_req().equals("")) {
-            pDTO.setStartDate_req(DateUtil.changeDate(pDTO.getEndDate_req(), YEAR, -2));
-        }
-        return pDTO;
+
     }
-}

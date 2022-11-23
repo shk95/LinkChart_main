@@ -41,36 +41,17 @@ public class ChartController {
 
             return null;
         }
-
-        // 입력된 데이터 날짜 범위 가져오기.
-        StockDTO dateRange = chartService.getStockData_dateRange(pDTO);
-        if (dateRange.getStartDate_exist().equals("")) {
-            pDTO.setStartDate_exist("");
-        } else {
-            pDTO.setStartDate_exist(dateRange.getStartDate_exist());
-        }
-        if (dateRange.getEndDate_exist().equals("")) {
-            pDTO.setEndDate_exist("");
-        } else {
-            pDTO.setEndDate_exist(dateRange.getEndDate_exist());
-        }
-        log.info("date range of stock_data that already exists : [{}] ~ [{}]", pDTO.getStartDate_exist(), pDTO.getEndDate_exist());
-
         try {
-            // 데이터 가져오기 날짜 범위 설정
-            pDTO.setStartDate_req((chartService.setDate(pDTO)).getStartDate_req());
-            pDTO.setEndDate_req((chartService.setDate(pDTO)).getEndDate_req());
             chartService.insertStockData(pDTO);
         } catch (Exception ignored) {
-            // 유틸 클래스 관련 IOException, ParseException, HTTPClient 관련 예외.
-            log.info("{}.getStockData end", this.getClass().getName());
 
             return null;
         }
-        //List<StockDTO> rDTO = chartService.getStockData(pDTO);
+
+        List<StockDTO> rDTO = chartService.getStockData(pDTO);
 
         log.info("{}.getStockData end", this.getClass().getName());
 
-        return chartService.getStockData(pDTO);
+        return rDTO;
     }
 }

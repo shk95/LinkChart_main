@@ -11,7 +11,5 @@ public interface IChartService {
 
     String getStockCodeByName(StockDTO pDTO);
 
-    StockDTO getStockData_dateRange(StockDTO pDTO);
-
     StockDTO setDate(StockDTO pDTO) throws Exception;
 }
