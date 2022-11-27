@@ -4,6 +4,7 @@ import com.fourward.linkchart.dto.MailDTO;
 import com.fourward.linkchart.service.IMailService;
 import com.fourward.linkchart.util.CmmUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
@@ -14,12 +15,16 @@ import java.util.Properties;
 @Slf4j
 @Service("MailService")
 public class MailService implements IMailService {
-    final String host = "smtp.naver.com";
-    final String user = "";
-    final String password = "";
+    @Value("${mail.host}")
+    private String host;
+    @Value("${mail.id}")
+    private String user;
+    @Value("${mail.password}")
+    private String password;
+
     @Override
     public int doSendMail(MailDTO pDTO) {
-        log.info(this.getClass().getName() + ".doSendMail start!");
+        log.info("{}.doSendMail start", this.getClass().getName());
 
         // 메일 발송 성공여부(발송성공 : 1 / 발송실패 : 0)
         int res = 1;
@@ -64,7 +69,7 @@ public class MailService implements IMailService {
             log.info("[ERROR] " + this.getClass().getName() + ".doSendMail : " + e);
         }
 
-        log.info(this.getClass().getName() + ".doSendMail end!");
+        log.info("{}.doSendMail end", this.getClass().getName());
 
         return res;
     }
